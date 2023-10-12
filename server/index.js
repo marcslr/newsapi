@@ -22,12 +22,42 @@ app.get("/getUser/:id", (req, res) => {
     .catch((err) => res.json(err));
 });
 
-app.post("/createUser", (req, res) => {
-  UserModel.create(req.body.name)
-    .then((users) => res.json(users))
-    .catch((err) => res.json(err));
+app.put("/updateUser/:id", (req, res) => {
+  const id = req.params.id;
+  UserModel.findByIdAndUpdate(
+    id, // Use just the id for the filter query
+    { nom: req.body.nom, email: req.body.email, age: req.body.age },
+    { new: true } // To return the updated document
+  )
+    .then((user) => {
+      if (user) {
+        res.json(user); // Send the updated user
+      } else {
+        res.status(404).json({ message: "User not found" });
+      }
+    })
+    .catch((err) => res.status(500).json({ message: "Internal server error" }));
 });
 
-app.listen(3001, () => {
-  console.log("Le serveur marche!");
+app.delete("/deleteUser/:id", (req, res) => {
+  const id = req.params.id;
+  UserModel.findByIdAndDelete(id)
+    .then((result) => {
+      if (result) {
+        res.json({ message: "User deleted successfully" });
+      } else {
+        res.status(404).json({ message: "User not found" });
+      }
+    })
+    .catch((err) => res.status(500).json({ message: "Internal server error" }));
+});
+
+app.post("/createUser", (req, res) => {
+  UserModel.create({
+    name: req.body.name,
+    email: req.body.email,
+    age: req.body.age,
+  })
+    .then((user) => res.json(user))
+    .catch((err) => res.json(err));
 });
