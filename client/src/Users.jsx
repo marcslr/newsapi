@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 function Users() {
 
     const [users, setUsers] = useState([{ Nom: "marc", Email: "marc@gmail.com", Age: 20}])
 
+    useEffect(()=> {
+        axios.get('http://localhost:3001')
+        .then(result => setUsers(result.data))
+        .catch(err => console.log(err))
+
+    }, [])
     return (
         <div className='d-flex'>
             <div className='w-50'>
@@ -26,8 +33,8 @@ function Users() {
                                     <td>{user.Email}</td>
                                     <td>{user.Age}</td>
                                     <td> 
-                                        <Link to='/update' className='btn btn-success'>Ajouter</Link>
-                                        <button>Supprimer</button>
+                                        <Link to={`/update/${user._id}`} className='btn btn-success'>Ajouter</Link>
+                                        <button className='btn btn-danger'>Supprimer</button>
                                     </td>
 
                                 </tr>
