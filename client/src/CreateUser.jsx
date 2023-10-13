@@ -16,7 +16,7 @@ const Submit = (e) => {
         navigate('/')
     })
     .catch(err => console.log(err))
-
+console.log ("bonbon")
 }
     return (
         <div className='d-flex2'>
