@@ -53,11 +53,10 @@ app.delete("/deleteUser/:id", (req, res) => {
 });
 
 app.post("/createUser", (req, res) => {
-  UserModel.create({
-    name: req.body.name,
-    email: req.body.email,
-    age: req.body.age,
-  })
+  UserModel.create(req.body)
     .then((user) => res.json(user))
     .catch((err) => res.json(err));
 });
+    
+
+   
